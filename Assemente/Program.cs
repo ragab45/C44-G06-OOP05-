@@ -1,7 +1,6 @@
 ﻿namespace Assemente
 {
-    internal class Program
-    {
+    
 
         #region part-1
         /*
@@ -29,45 +28,81 @@
         #endregion
         #region part-2
         #region Q-1
-        interface IShape
+        //interface IShape
+        //{
+        //    double Area { get; }
+        //    void DisplayShapeInfo();
+        //}
+
+        //class Circle : IShape
+        //{
+        //    public double Radius { get; private set; }
+
+        //    public double Area => Math.PI * Radius * Radius;
+
+        //    public Circle(double radius)
+        //    {
+        //        Radius = radius;
+        //    }
+
+        //    public void DisplayShapeInfo()
+        //    {
+        //        Console.WriteLine($"Circle with radius {Radius}, Area = {Area:F2}");
+        //    }
+        //}
+
+        //class Rectangle : IShape
+        //{
+        //    public double Width { get; private set; }
+        //    public double Height { get; private set; }
+
+        //    public double Area => Width * Height;
+
+        //    public Rectangle(double width, double height)
+        //    {
+        //        Width = width;
+        //        Height = height;
+        //    }
+
+        //    public void DisplayShapeInfo()
+        //    {
+        //        Console.WriteLine($"Rectangle {Width} x {Height}, Area = {Area}");
+        //    }
+        //}
+
+        //class Program
+        //{
+        //    static void Main()
+        //    {
+        //        IShape circle = new Circle(5);
+        //        IShape rectangle = new Rectangle(4, 6);
+
+        //        circle.DisplayShapeInfo();
+        //        rectangle.DisplayShapeInfo();
+        //    }
+
+        #endregion
+        #region Q-2
+        public interface IAuthenticationService
         {
-            double Area { get; }
-            void DisplayShapeInfo();
+            bool AuthenticateUser(string username, string password);
+            bool AuthorizeUser(string username, string role);
         }
 
-        class Circle : IShape
+        public class BasicAuthenticationService : IAuthenticationService
         {
-            public double Radius { get; private set; }
+            private string storedUser = "admin";
+            private string storedPass = "1234";
+            private string storedRole = "admin";
 
-            public double Area => Math.PI * Radius * Radius;
-
-            public Circle(double radius)
+            public bool AuthenticateUser(string username, string password)
             {
-                Radius = radius;
+                return username == storedUser && password == storedPass;
             }
 
-            public void DisplayShapeInfo()
+            public bool AuthorizeUser(string username, string role)
             {
-                Console.WriteLine($"Circle with radius {Radius}, Area = {Area:F2}");
-            }
-        }
-
-        class Rectangle : IShape
-        {
-            public double Width { get; private set; }
-            public double Height { get; private set; }
-
-            public double Area => Width * Height;
-
-            public Rectangle(double width, double height)
-            {
-                Width = width;
-                Height = height;
-            }
-
-            public void DisplayShapeInfo()
-            {
-                Console.WriteLine($"Rectangle {Width} x {Height}, Area = {Area}");
+                return username == storedUser && role == storedRole;
             }
         }
 
@@ -75,16 +110,17 @@
         {
             static void Main()
             {
-                IShape circle = new Circle(5);
-                IShape rectangle = new Rectangle(4, 6);
+                IAuthenticationService authService = new BasicAuthenticationService();
 
-                circle.DisplayShapeInfo();
-                rectangle.DisplayShapeInfo();
+                bool isAuthenticated = authService.AuthenticateUser("admin", "1234");
+                Console.WriteLine($"Authenticated: {isAuthenticated}");
+
+                bool isAuthorized = authService.AuthorizeUser("admin", "admin");
+                Console.WriteLine($"Authorized: {isAuthorized}");
             }
-
             #endregion
             #endregion
         }
 
     }
-}
+
